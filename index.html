@@ -1,20 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=no"
+    />
+    <title>Canvas</title>
+    <link rel="stylesheet" type="text/css" href="general.css" />
+    <link href="paint.css" rel="stylesheet" />
+    <!-- Additional head elements such as scripts, other meta tags, etc. can go here -->
+  </head>
 
-	<head>
-		<meta charset="utf-8" />
-		<title>Canvas</title>
-		<link rel="stylesheet" type="text/css" href="general.css">
-        <link href="paint.css" rel="stylesheet">
-       
-	</head>
-<body>
-            <div id="topStuff">
-          <header id="top_header">
-				<p>Canvas</p>
-			</header>
+  <body>
+    <div id="topStuff">
+      <header id="top_header">
+        <p>Canvas</p>
+      </header>
+    </div>
 
-			<!-- <nav id="top_menu">
+    <div id="canvasDiv">
+      <canvas id="canvas" width="300" height="300">
+        Sorry Cannot display Canvas. Update Browser.
+      </canvas>
+    </div>
+
+    <!-- <nav id="top_menu">
 				<ul>
                   <li>
                     <div id="myNav" class="overlay">
@@ -27,31 +38,32 @@
                   </li>
           </ul>
 			</nav> -->
-<!--       
-            </div> -->
-            
-            <!-- <button id="printButton">Print Coordinates</button> -->
-            <button id="printFreehandButton">Print Coordinates</button>
-            <button id="downloadButton">Download</button>
-            <button id="maskButton">Mask</button>
-            <!-- Button to trigger the download function -->
-            <button id="maskDownloadButton">Download Masks</button>
-            <!-- Anchor element for download -->
-            <a id="downloadAnchor" style="display: none;">hellooo</a>
-            <div id="coordinatesDisplay"></div>
 
+    <div id="coordinatesDisplay"></div>
+    <div id="container">
+      <!-- not sure what container does- not present anywhere -->
 
-            <div id="coordinatesDisplay"></div>
-            <div id="container">  
-              <!-- not sure what container does- not present anywhere -->
-	
-              <div id="controls">
+      <!-- <div id="controls"> -->
 
-                <p><input id="clearCanvas" class="listingButton" type="button" value="New"></p>
-                <p><input id="deleteLastStep" class="listingButton" type="button" value="Undo"></p>
-                <p><input type="button" class="listingButton"  value="color" onclick="slideOpen(colorDiv)" ></p>
-                
-                <div class="lightBorder" id="colorDiv">
+      <p>
+        <input
+          id="clearCanvas"
+          class="listingButton"
+          type="button"
+          value="New"
+        />
+      </p>
+      <p>
+        <input
+          id="deleteLastStep"
+          class="listingButton"
+          type="button"
+          value="Undo"
+        />
+      </p>
+      <!-- <p><input type="button" class="listingButton"  value="color" onclick="slideOpen(colorDiv)" ></p> -->
+
+      <!-- <div class="lightBorder" id="colorDiv">
                   <input type="button" class="closeButtonOptions" id="colorButton" value="&times"
                          onclick="slideClose(colorDiv, 'colorButton')">
                   <p><label>Fill: <input id="fillBox" type="checkbox" checked="checked"></label></p>
@@ -67,10 +79,9 @@
                 <p><label>Line Width: <input id="lineWidth" type="range" step="1" min="1" max="200" value="4"></label></p>
                 <p><input type="radio" name="lineCap" value="round"  checked="checked">round</p>
                 <p><input type="radio" name="lineCap" value="butt">Butt</p>
-                <p><input type="radio" name="lineCap" value="square">square</p>
-                 </div>
+                <p><input type="radio" name="lineCap" value="square">square</p> -->
 
-     <p> <input type="button" class="listingButton"  value="Shape" onclick="slideOpen(shapeDiv)" ></p>
+      <!-- <p> <input type="button" class="listingButton"  value="Shape" onclick="slideOpen(shapeDiv)" ></p>
       <div class="lightBorder" id="shapeDiv">
         <input type="button" class="closeButtonOptions" id="shapeButton" value="&times"
                  onclick="slideClose(shapeDiv)">
@@ -82,25 +93,75 @@
         <p><input type="radio" name="shape" value="circle">Circle</p>
         <p><input type="radio" name="shape" value="polygon">Polygon</p>
         <p><label>Polygon Sides: <input id="polygonSides" type="range" step="1" min="3" max="10"></label></p>
-         <p><label>Polygon Angle: <input id="polygonAngle" type="range" step="22.5" min="0" max="90"></label></p>
+         <p><label>Polygon Angle: <input id="polygonAngle" type="range" step="22.5" min="0" max="90"></label></p> !-->
+      <!-- </div> -->
+
+      <p>
+        <input
+          type="button"
+          class="listingButton"
+          value="Image"
+          onclick="slideOpen(imageDiv)"
+        />
+      </p>
+      <div class="lightBorder" id="imageDiv">
+        <input
+          type="button"
+          class="closeButtonOptions"
+          id="shapeButton"
+          value="&times"
+          onclick="slideClose(imageDiv)"
+        />
+        <p><input type="file" id="inputFileToLoad" /></p>
+        <p>
+          <input
+            type="button"
+            id="buttonLoadFile"
+            value="Load Selected File"
+            ;
+            onclick="loadImageFileAsURL()"
+          />
+        </p>
       </div>
 
-<p> <input type="button" class="listingButton"  value="Image" onclick="slideOpen(imageDiv)" ></p>
-<div class="lightBorder" id="imageDiv">
-  <input type="button" class="closeButtonOptions" id="shapeButton" value="&times"
-                 onclick="slideClose(imageDiv)">
-<p> <input type="file" id= "inputFileToLoad" > </p>
-<p> <input type="button" id="buttonLoadFile" value ="Load Selected File"; onclick="loadImageFileAsURL()"> </p>
-</div>
-     
+      <!-- <button id="printButton">Print Coordinates</button> -->
+      <div>
+        <p>
+          <input
+            id="printFreehandButton"
+            class="listingButton"
+            type="button"
+            value="Print coordinates"
+          />
+        </p>
+        <p>
+          <input
+            id="downloadButton"
+            class="listingButton"
+            type="button"
+            value="Download coordinates"
+          />
+        </p>
+        <p>
+          <input
+            id="maskDownloadButton"
+            class="listingButton"
+            type="button"
+            value="Mask download"
+          />
+        </p>
+        <a id="downloadAnchor" style="display: none">Download Masks</a>
+      </div>
+    </div>
 
-<p> <input type="button" class="listingButton"  value="Composition" onclick="slideOpen(compositionControl)" ></p>
+    <!-- <p> <input type="button" class="listingButton"  value="Composition" onclick="slideOpen(compositionControl)" ></p> -->
 
-     <div id="compositionControl" class="lightBorder">
+    <!-- <div id="compositionControl" class="lightBorder">
        <input type="button" class="closeButtonOptions" id="compositionButton" value="&times"
                  onclick="slideClose(compositionControl)"></p>
       <p><input type="radio" name="composition" value="source&timesover" checked="checked">source-over</p>
-        <!-- <p><input type="radio" name="composition" value="source-atop">source-atop</p>
+     </div> -->
+    <!-- <p><input type="radio" name="composition" value="source-atop">source-atop</p>
         <p><input type="radio" name="composition" value="source-in">source-in</p>
         <p><input type="radio" name="composition" value="source-out">source-out</p>
        
@@ -112,21 +173,8 @@
         <p><input type="radio" name="composition" value="lighter">lighter</p>
         <p><input type="radio" name="composition" value="copy">copy</p>
         <p><input type="radio" name="composition" value="xor">xor</p> -->
-    </div>
 
-</div>
-
-
-<div id="canvasDiv">
-    <canvas id="canvas" width="1000" height="600"> 
-      Sorry Cannot display Canvas. Update Browser.
-    </canvas>
-</div>
-
-
-</div>
- <script src="paint.js"></script>
-<script src="general.js"></script> 
-
-</body>
+    <script src="paint.js"></script>
+    <script src="general.js"></script>
+  </body>
 </html>
