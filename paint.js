@@ -46,24 +46,6 @@ function restoreSnapshot() {
   context.putImageData(snapshot, 0, 0);
 }
 
-function drawLine(position) {
-  context.beginPath();
-  context.moveTo(dragStartLocation.x, dragStartLocation.y);
-  context.lineTo(position.x, position.y);
-  context.stroke();
-  localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
-}
-
-function drawQCurve(position) {
-  context.beginPath();
-  context.moveTo(dragStartLocation.x, dragStartLocation.y);
-  var cpx = dragStartLocation.x;
-  var cpy = position.x / 2;
-  context.quadraticCurveTo(cpx, cpy, position.x, position.y);
-  context.stroke();
-  localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
-}
-
 function erase(position, esize) {
   if (dragging == true) {
     context.clearRect(position.x, position.y, esize, esize);
@@ -73,13 +55,6 @@ function erase(position, esize) {
 }
 
 function drawFree(position) {
-  // if(dragging==true){
-  // context.lineTo(position.x, position.y);
-  // context.stroke();
-  // localStorage.savedPaintCanvas =JSON.stringify(canvas.toDataURL());
-  // takeSnapshot();
-  // }
-
   if (dragging) {
     context.lineTo(position.x, position.y);
     context.stroke();
@@ -95,139 +70,10 @@ function drawFree(position) {
   }
 }
 
-function drawCircle(position) {
-  var radius = Math.sqrt(
-    Math.pow(dragStartLocation.x - position.x, 2) +
-      Math.pow(dragStartLocation.y - position.y, 2)
-  );
-  context.beginPath();
-  context.arc(
-    dragStartLocation.x,
-    dragStartLocation.y,
-    radius,
-    0,
-    2 * Math.PI,
-    false
-  );
-  localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
-}
-
-function drawPolygon(position, sides, angle) {
-  var coordinates = [],
-    radius = Math.sqrt(
-      Math.pow(dragStartLocation.x - position.x, 2) +
-        Math.pow(dragStartLocation.y - position.y, 2)
-    ),
-    index = 0;
-
-  for (index = 0; index < sides; index++) {
-    coordinates.push({
-      x: dragStartLocation.x + radius * Math.cos(angle),
-      y: dragStartLocation.y - radius * Math.sin(angle),
-    });
-    angle += (2 * Math.PI) / sides;
-  }
-
-  context.beginPath();
-  context.moveTo(coordinates[0].x, coordinates[0].y);
-  for (index = 1; index < sides; index++) {
-    context.lineTo(coordinates[index].x, coordinates[index].y);
-    localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
-  }
-
-  context.closePath();
-}
-
 function draw(position) {
   var fillBox = document.getElementById("fillBox");
-  // shape = document.querySelector(
-  //   'input[type="radio"][name="shape"]:checked'
-  // ).value,
-  // polygonSides = document.getElementById("polygonSides").value,
-  // polygonAngle = document.getElementById("polygonAngle").value,
-  // lineCap = document.querySelector(
-  //   'input[type="radio"][name="lineCap"]:checked'
-  // ).value,
-  // eraseDim = document.getElementById("eraseArea").value,
-  // composition = document.querySelector(
-  //   'input[type="radio"][name="composition"]:checked'
-  // ).value;
-
-  // context.lineCap = lineCap;
-  // context.globalCompositeOperation = composition;
-
-  // if (shape === "eraser") {
-  //   erase(position, eraseDim);
-  //}
-
-  // if (shape === "free") {
   drawFree(position);
-  // }
-
-  // if (shape === "circle") {
-  //   drawCircle(position);
-  // }
-  // if (shape === "line") {
-  //   drawLine(position);
-  // }
-
-  // if (shape === "qcurve") {
-  //   drawQCurve(position);
-  // }
-
-  // if (shape === "polygon") {
-  //   drawPolygon(position, polygonSides, polygonAngle * (Math.PI / 180));
-  // }
-
-  // if (shape !== "line" && shape !== "free" && shape !== "bcurve") {
-  //   if (fillBox.checked) {
-  //     context.fill();
-  //     localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
-  //   } else {
-  //     context.stroke();
-  //     localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
-  //   }
-  // }
 }
-
-// function dragStart(event) {
-//   dragging = true;
-//   dragStartLocation = getCanvasCoordinates(event);
-//   backCtx.drawImage(canvas, 0, 0);
-//   takeSnapshot();
-//   context.beginPath();
-//   context.moveTo(dragStartLocation.x, dragStartLocation.y);
-//   canvas.addEventListener("mousemove", drag, false);
-// }
-
-// function drag(event) {
-//   var position;
-//   if (dragging === true) {
-//     restoreSnapshot();
-//     position = getCanvasCoordinates(event);
-//     draw(position);
-//   }
-
-//   if (dragging === true) {
-//     restoreSnapshot();
-//     var position;
-//     if (isTouchDevice) {
-//       position = getTouchCoordinates(event);
-//       // console.log("mobile");
-//     } else {
-//       position = getCanvasCoordinates(event);
-//       console.log("laptop");
-//     }
-//     draw(position);
-//   }
-//}
-
-// function dragStop(event) {
-//   dragging = false;
-//   restoreSnapshot();
-//   var position = getCanvasCoordinates(event);
-//   draw(position);
-// }
 
 function getTouchCoordinates(event) {
   let x, y;
@@ -296,29 +142,6 @@ function dragStop(event) {
   draw(position);
 }
 
-// function changeLineWidth() {
-//   context.lineWidth = this.value;
-//   event.stopPropagation();
-// }
-
-// function changeFillStyle() {
-//   context.fillStyle = this.value;
-//   event.stopPropagation();
-// }
-
-// function changeStrokeStyle() {
-//   context.strokeStyle = this.value;
-//   event.stopPropagation();
-// }
-
-// function changeBackgroundColor() {
-//   context.save();
-//   context.fillStyle = document.getElementById("backgroundColor").value;
-//   context.fillRect(0, 0, canvas.width, canvas.height);
-//   localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
-//   context.restore();
-// }
-
 function eraseCanvas() {
   context.clearRect(0, 0, canvas.width, canvas.height);
   backCtx.clearRect(0, 0, backCanvas.width, backCanvas.height);
@@ -337,11 +160,6 @@ function init() {
   var clearCanvas = document.getElementById("clearCanvas"),
     deleteLastStep = document.getElementById("deleteLastStep");
 
-  //  fillColor = document.getElementById("fillColor"),
-  //    canvasColor = document.getElementById("backgroundColor"),
-  //    clearCanvas = document.getElementById("clearCanvas");
-  //  deleteLastStep = document.getElementById("deleteLastStep");
-
   canvas.addEventListener("mousedown", dragStart, false);
   canvas.addEventListener("mousemove", drag, false);
   canvas.addEventListener("mouseup", dragStop, false);
@@ -350,27 +168,8 @@ function init() {
   canvas.addEventListener("touchmove", drag, false);
   canvas.addEventListener("touchend", dragStop, false);
 
-  // if (isTouchDevice) {
-  //   canvas.addEventListener("touchstart", dragStart, { passive: true });
-  //   canvas.addEventListener("touchmove", drag, { passive: true });
-  //   // For touchend, you don't need to specify the passive option because touchend is not cancellable
-  //   canvas.addEventListener("touchend", dragStop);
-  // } else {
-  //   canvas.addEventListener("mousedown", dragStart, false);
-  //   canvas.addEventListener("mousemove", drag, false);
-  //   canvas.addEventListener("mouseup", dragStop, false);
-  // }
-
-  // lineWidth.addEventListener("input", changeLineWidth, false);
-  // fillColor.addEventListener("input", changeFillStyle, false);
-  // strokeColor.addEventListener("input", changeStrokeStyle, false);
-  // canvasColor.addEventListener("input", changeBackgroundColor, false);
   clearCanvas.addEventListener("click", eraseCanvas, false);
   deleteLastStep.addEventListener("click", deleteStep, false);
-  // canvas.addEventListener("click", handleAnnotation); //can be deleted mp
-
-  // var printButton = document.getElementById("printButton");
-  // printButton.addEventListener("click", printCoordinates);
 }
 
 window.addEventListener("load", init, false);
@@ -391,6 +190,8 @@ var annotations = [];
 
 var drawing = false;
 
+// context.imageSmoothingEnabled = false;
+var originalImageData = "";
 function loadImageFileAsURL() {
   var filesSelected = document.getElementById("inputFileToLoad").files;
 
@@ -402,107 +203,59 @@ function loadImageFileAsURL() {
 
       fileReader.onload = function (fileLoadedEvent) {
         var imageLoaded = new Image();
+
         imageLoaded.onload = function () {
-          canvas.width = imageLoaded.width;
-          canvas.height = imageLoaded.height;
+          // Clear previous content from the canvas
+          context.clearRect(0, 0, canvas.width, canvas.height);
 
-          context.drawImage(imageLoaded, 0, 0);
+          // Draw the image on the canvas
+          context.drawImage(imageLoaded, 0, 0, canvas.width, canvas.height);
 
+          // canvas.width = imageLoaded.width;
+          // canvas.height = imageLoaded.height;
+          // context.drawImage(imageLoaded, 0, 0);
+
+          originalImageData = fileLoadedEvent.target.result;
+          // console.log("Image Source:", fileLoadedEvent.target.result);
+
+          // Save the canvas content to localStorage if needed
           localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
 
+          // Clear any annotations or other previous data
           annotations = [];
         };
 
         imageLoaded.src = fileLoadedEvent.target.result;
       };
-
       fileReader.readAsDataURL(fileToLoad);
+    } else {
+      console.error("Selected file is not an image.");
     }
+  } else {
+    console.error("No file selected.");
   }
 }
 
-// Function to handle annotation
-//can be deleted mp
-// function handleAnnotation(event) {
-// var x = event.clientX - canvas.offsetLeft;
-// var y = event.clientY - canvas.offsetTop;
+// Function to programmatically trigger the file input
+function triggerFileInput() {
+  document.getElementById("inputFileToLoad").click();
+}
 
-// // Store the annotation coordinates
-// annotations.push({ x: x, y: y });
+// Function to open the overlay
+function openOverlay() {
+  // Set the source of the fullImage element to the original image data
+  document.getElementById("fullImage").src = originalImageData;
 
-// // Draw the annotation on the canvas
-// drawAnnotation(x, y);
-// }
+  // Display the overlay
+  document.getElementById("imageOverlay").style.display = "block";
+}
 
-// // Function to draw an annotation on the canvas
-// function drawAnnotation(x, y) {
-//     context.beginPath();
-//     context.arc(x, y, 5, 0, 2 * Math.PI);
-//     context.fillStyle = "red";
-//     context.fill();
-//     context.closePath();
-// }
-
-// function printCoordinates() {
-// var coordinatesDisplay = document.getElementById("coordinatesDisplay");
-// coordinatesDisplay.innerHTML = "<strong>Annotation Coordinates:</strong><br>";
-
-// annotations.forEach(function(stroke, strokeIndex) {
-// coordinatesDisplay.innerHTML += `<strong>Stroke ${strokeIndex + 1}:</strong><br>`;
-
-// stroke.forEach(function(point, pointIndex) {
-// coordinatesDisplay.innerHTML += `Point ${pointIndex + 1}: X=${point.x}, Y=${point.y}<br>`;
-// });
-// });
-// }
-
-// function startDrawing(event) {
-// drawing = true;
-// annotations.push([]); // Start a new stroke
-// addPoint(event);
-
-//ADDED FROM DRAWFREE
-// context.lineTo(position.x, position.y);
-// context.stroke();
-// localStorage.savedPaintCanvas =JSON.stringify(canvas.toDataURL());
-// takeSnapshot();
-//}
-
-// function stopDrawing() {
-// drawing = false;
-// }
-
-// function addPoint(event) {
-// if (!drawing) return;
-
-// var x = event.clientX - canvas.offsetLeft;
-// var y = event.clientY - canvas.offsetTop;
-
-// annotations[annotations.length - 1].push({ x: x, y: y });
-
-// drawPoint(x, y); //SINGLE RED POINT
-// }
-
-// function drawPoint(x, y) {
-// context.beginPath();
-// context.arc(x, y, 2, 0, 2 * Math.PI);
-// context.fillStyle = "red";
-// context.fill();
-// context.closePath();
-// }
-
-// canvas.addEventListener("mousedown", startDrawing);
-// canvas.addEventListener("mouseup", stopDrawing);
-// canvas.addEventListener("mousemove", addPoint);
+// Function to close the overlay
+function closeOverlay() {
+  document.getElementById("imageOverlay").style.display = "none";
+}
 
 var freehandAnnotations = [[]];
-
-// function printFreehandCoordinates() {
-//     console.log("Freehand Annotation Coordinates:");
-//     freehandAnnotations.forEach(function(point, index) {
-//         console.log(`Point ${index + 1}: X=${point.x}, Y=${point.y}`);
-//     });
-// }
 
 function printFreehandCoordinates(annotationIndex) {
   console.log(`Annotation ${annotationIndex + 1} Coordinates:`);
@@ -510,9 +263,6 @@ function printFreehandCoordinates(annotationIndex) {
     console.log(`Point ${index + 1}: X=${point.x}, Y=${point.y}`);
   });
 }
-
-// var printFreehandButton = document.getElementById("printFreehandButton");
-// printFreehandButton.addEventListener("click", printFreehandCoordinates);
 
 var printFreehandButton = document.getElementById("printFreehandButton");
 
@@ -625,56 +375,3 @@ function saveMasksAsImages() {
 
 var maskDownload = document.getElementById("maskDownloadButton");
 maskDownload.addEventListener("click", saveMasksAsImages);
-
-// function saveMasksAsImages() {
-//   // Create a new canvas to combine masks
-//   // const combinedCanvas = document.createElement('canvas');
-//   // const combinedContext = combinedCanvas.getContext('2d');
-
-//   // // Set canvas dimensions (assuming both masks have the same dimensions)
-//   // combinedCanvas.width = masks[0].width;
-//   // combinedCanvas.height = masks[0].height;
-
-//   // // Draw each mask onto the combined canvas
-//   // for (let i = 0; i < masks.length; i++) {
-//   //     combinedContext.putImageData(masks[i], 0, 0);
-//   // }
-
-//   // // Convert the combined canvas to a data URL
-//   // const combinedImageDataUrl = combinedCanvas.toDataURL('image/png');
-
-//   // // Create an anchor element for download
-//   // const downloadAnchor = document.createElement('a');
-//   // downloadAnchor.href = combinedImageDataUrl;
-//   // downloadAnchor.download = 'combined_masks.png';  // Name of the downloaded file
-//   // downloadAnchor.click();
-
-//   const combinedCanvas = document.createElement("canvas");
-//   combinedCanvas.width = canvas.width;
-//   combinedCanvas.height = canvas.height;
-//   const combinedContext = combinedCanvas.getContext("2d");
-
-//   // Iterate over masks and composite each onto the combined canvas
-//   masks.forEach(function (maskImageData) {
-//     // Create a temporary canvas for the current mask
-//     const tempCanvas = document.createElement("canvas");
-//     tempCanvas.width = combinedCanvas.width;
-//     tempCanvas.height = combinedCanvas.height;
-//     const tempContext = tempCanvas.getContext("2d");
-
-//     // Draw the current mask onto the temporary canvas
-//     tempContext.putImageData(maskImageData, 0, 0);
-
-//     // Composite the temporary canvas onto the combined canvas
-//     combinedContext.drawImage(tempCanvas, 0, 0);
-//   });
-
-//   const downloadAnchor = document.getElementById("downloadAnchor");
-//   downloadAnchor.href = combinedCanvas.toDataURL("image/png");
-//   downloadAnchor.download = "combined_masks.png";
-//   downloadAnchor.click();
-// }
-
-// function funct(){
-//     saveMasksAsImages(masks, 'mask');
-// }

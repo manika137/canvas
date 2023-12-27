@@ -4,12 +4,11 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=no"
+      content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes"
     />
     <title>Canvas</title>
     <link rel="stylesheet" type="text/css" href="general.css" />
     <link href="paint.css" rel="stylesheet" />
-    <!-- Additional head elements such as scripts, other meta tags, etc. can go here -->
   </head>
 
   <body>
@@ -19,13 +18,8 @@
       </header>
     </div>
 
-    <div id="canvasDiv">
-      <canvas id="canvas" width="300" height="300">
-        Sorry Cannot display Canvas. Update Browser.
-      </canvas>
-    </div>
-
-    <!-- <nav id="top_menu">
+    <div id="canvasContainer">
+      <!-- <nav id="top_menu">
 				<ul>
                   <li>
                     <div id="myNav" class="overlay">
@@ -38,141 +32,171 @@
                   </li>
           </ul>
 			</nav> -->
-
-    <div id="coordinatesDisplay"></div>
-    <div id="container">
-      <!-- not sure what container does- not present anywhere -->
-
-      <!-- <div id="controls"> -->
-
-      <p>
-        <input
-          id="clearCanvas"
-          class="listingButton"
-          type="button"
-          value="New"
-        />
-      </p>
-      <p>
-        <input
-          id="deleteLastStep"
-          class="listingButton"
-          type="button"
-          value="Undo"
-        />
-      </p>
-      <!-- <p><input type="button" class="listingButton"  value="color" onclick="slideOpen(colorDiv)" ></p> -->
-
-      <!-- <div class="lightBorder" id="colorDiv">
-                  <input type="button" class="closeButtonOptions" id="colorButton" value="&times"
-                         onclick="slideClose(colorDiv, 'colorButton')">
-                  <p><label>Fill: <input id="fillBox" type="checkbox" checked="checked"></label></p>
-                  <p><label>Fill Color: <input id="fillColor" type="color" value="#3333FF"></label>  
-                  <p><label>Fill Canvas: <input id="backgroundColor" type="color" value="#FFFFFF"></label></p>
-                  <p><label>Stroke Color: <input id="strokeColor" type="color"></label></p>
-                </div>
-                  
-                <p> <input type="button" class="listingButton"  value="Line Style" onclick="slideOpen(lineDiv)" ></p>
-                <div class="lightBorder" id="lineDiv"> 
-                  <input type="button" class="closeButtonOptions" id="lineButton" value="&times"
-                         onclick="slideClose(lineDiv)"></p>
-                <p><label>Line Width: <input id="lineWidth" type="range" step="1" min="1" max="200" value="4"></label></p>
-                <p><input type="radio" name="lineCap" value="round"  checked="checked">round</p>
-                <p><input type="radio" name="lineCap" value="butt">Butt</p>
-                <p><input type="radio" name="lineCap" value="square">square</p> -->
-
-      <!-- <p> <input type="button" class="listingButton"  value="Shape" onclick="slideOpen(shapeDiv)" ></p>
-      <div class="lightBorder" id="shapeDiv">
-        <input type="button" class="closeButtonOptions" id="shapeButton" value="&times"
-                 onclick="slideClose(shapeDiv)">
-        <p> <input type="radio" name="shape"  value="eraser" checked="checked" >Erase</p>
-        <p><label>Area: <input id="eraseArea" type="range" step="5" min="5" max="100"></label></p>
-        <p> <input type="radio" name="shape"  value="free" checked="checked" >Free Drawing</p>
-        <p><input type="radio" name="shape" value="line" >Line</p>
-        <p><input type="radio" name="shape" value="qcurve" >Quadratic Curve</p>
-        <p><input type="radio" name="shape" value="circle">Circle</p>
-        <p><input type="radio" name="shape" value="polygon">Polygon</p>
-        <p><label>Polygon Sides: <input id="polygonSides" type="range" step="1" min="3" max="10"></label></p>
-         <p><label>Polygon Angle: <input id="polygonAngle" type="range" step="22.5" min="0" max="90"></label></p> !-->
-      <!-- </div> -->
-
-      <p>
-        <input
-          type="button"
-          class="listingButton"
-          value="Image"
-          onclick="slideOpen(imageDiv)"
-        />
-      </p>
-      <div class="lightBorder" id="imageDiv">
-        <input
-          type="button"
-          class="closeButtonOptions"
-          id="shapeButton"
-          value="&times"
-          onclick="slideClose(imageDiv)"
-        />
-        <p><input type="file" id="inputFileToLoad" /></p>
-        <p>
-          <input
-            type="button"
-            id="buttonLoadFile"
-            value="Load Selected File"
-            ;
-            onclick="loadImageFileAsURL()"
-          />
-        </p>
+      <div id="canvasDiv">
+        <canvas id="canvas" width="300" height="300">
+          Sorry Cannot display Canvas. Update Browser.
+        </canvas>
       </div>
 
-      <!-- <button id="printButton">Print Coordinates</button> -->
-      <div>
-        <p>
-          <input
-            id="printFreehandButton"
-            class="listingButton"
-            type="button"
-            value="Print coordinates"
-          />
-        </p>
-        <p>
-          <input
-            id="downloadButton"
-            class="listingButton"
-            type="button"
-            value="Download coordinates"
-          />
-        </p>
-        <p>
-          <input
-            id="maskDownloadButton"
-            class="listingButton"
-            type="button"
-            value="Mask download"
-          />
-        </p>
-        <a id="downloadAnchor" style="display: none">Download Masks</a>
+      <div id="buttonContainer">
+        <div class="dropdown" id="annotationDropdown">
+          <button onclick="toggleDropdown()" class="listingButton">
+            Annotate
+          </button>
+          <div id="dropdownContent" class="dropdown-content">
+            <!-- not sure what container does- not present anywhere -->
+
+            <!-- <div id="controls"> -->
+
+            <p>
+              <input
+                id="clearCanvas"
+                class="listingButton"
+                type="button"
+                value="New"
+              />
+            </p>
+            <p>
+              <input
+                id="deleteLastStep"
+                class="listingButton"
+                type="button"
+                value="Undo"
+              />
+            </p>
+
+            <!-- <p>
+            <input
+              type="button"
+              class="listingButton"
+              value="Annotate"
+              onclick="openOverlay()"
+            />
+            </p> -->
+
+            <p>
+              <input
+                type="button"
+                class="listingButton"
+                value="Image"
+                onclick="triggerFileInput()"
+              />
+              <input
+                type="file"
+                id="inputFileToLoad"
+                style="display: none"
+                onchange="loadImageFileAsURL()"
+              />
+            </p>
+
+            <!-- <p>
+            <input
+              type="button"
+              class="listingButton"
+              value="Image"
+              onclick="loadImageFileAsURL()"
+            />
+           </p>
+           <div class="lightBorder" id="imageDiv">
+             <input
+              type="button"
+              class="closeButtonOptions"
+              id="shapeButton"
+              value="&times"
+              onclick="slideClose(imageDiv)"
+            />
+            <p><input type="file" id="inputFileToLoad" /></p>
+           </div> -->
+
+            <!-- <p>
+            <input
+              type="button"
+              class="listingButton"
+              value="Image"
+              onclick="slideOpen(imageDiv)"
+            />
+          </p>
+          <div class="lightBorder" id="imageDiv">
+            <input
+              type="button"
+              class="closeButtonOptions"
+              id="shapeButton"
+              value="&times"
+              onclick="slideClose(imageDiv)"
+            />
+            <p><input type="file" id="inputFileToLoad" /></p>
+            <p>
+              <input
+                type="button"
+                id="buttonLoadFile"
+                value="Load Selected File"
+                ;
+                onclick="loadImageFileAsURL()"
+              />
+            </p>
+          </div> -->
+            <p>
+              <input
+                id="printFreehandButton"
+                class="listingButton"
+                type="button"
+                value="Save annotations"
+              />
+            </p>
+            <p>
+              <input
+                id="downloadButton"
+                class="listingButton"
+                type="button"
+                value="Download coordinates"
+              />
+            </p>
+            <p>
+              <input
+                id="maskDownloadButton"
+                class="listingButton"
+                type="button"
+                value="Mask download"
+              />
+            </p>
+            <a id="downloadAnchor" style="display: none">Download Masks</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- <p>
+        <input
+          id="nextButton"
+          class="listingButton"
+          type="button"
+          value="Next"
+        />
+      </p> -->
+
+      <div class="select-mcq">
+        <label>Select appropriate class labels</label>
+        <div class="mcq-options">
+          <input type="checkbox" id="option1" name="options" value="option1" />
+          <label for="option1">Option 1</label><br />
+
+          <input type="checkbox" id="option2" name="options" value="option2" />
+          <label for="option2">Option 2</label><br />
+
+          <input type="checkbox" id="option3" name="options" value="option3" />
+          <label for="option3">Option 3</label><br />
+
+          <!-- Add more options as needed -->
+        </div>
+      </div>
+
+      <!-- Image Overlay Area -->
+      <div id="imageOverlay" class="overlay">
+        <div class="overlay-content">
+          <span class="closebtn" onclick="closeOverlay()">&times;</span>
+          <img id="fullImage" src="" alt="Full Image Preview" />
+        </div>
       </div>
     </div>
-
-    <!-- <p> <input type="button" class="listingButton"  value="Composition" onclick="slideOpen(compositionControl)" ></p> -->
-
-    <!-- <div id="compositionControl" class="lightBorder">
-       <input type="button" class="closeButtonOptions" id="compositionButton" value="&times"
-                 onclick="slideClose(compositionControl)"></p>
-      <p><input type="radio" name="composition" value="source&timesover" checked="checked">source-over</p>
-     </div> -->
-    <!-- <p><input type="radio" name="composition" value="source-atop">source-atop</p>
-        <p><input type="radio" name="composition" value="source-in">source-in</p>
-        <p><input type="radio" name="composition" value="source-out">source-out</p>
-       
-        <p><input type="radio" name="composition" value="destination-over">destination-over</p>
-        <p><input type="radio" name="composition" value="destination-atop">destination-atop</p>
-        <p><input type="radio" name="composition" value="destination-in">destination-in</p>
-        <p><input type="radio" name="composition" value="destination-out">destination-out</p>
-       
-        <p><input type="radio" name="composition" value="lighter">lighter</p>
-        <p><input type="radio" name="composition" value="copy">copy</p>
-        <p><input type="radio" name="composition" value="xor">xor</p> -->
 
     <script src="paint.js"></script>
     <script src="general.js"></script>
