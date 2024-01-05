@@ -56,16 +56,21 @@ function erase(position, esize) {
 
 function drawFree(position) {
   if (dragging) {
+    const scaleX = originalImageWidth / canvas.width;
+    const scaleY = originalImageHeight / canvas.height;
+
+    const adjustedX = position.x * scaleX;
+    const adjustedY = position.y * scaleY;
+
     context.lineTo(position.x, position.y);
     context.stroke();
 
     freehandAnnotations[currentAnnotationIndex].push({
-      x: position.x,
-      y: position.y,
+      x: adjustedX,
+      y: adjustedY,
     });
 
     localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
-
     takeSnapshot();
   }
 }
@@ -156,7 +161,6 @@ function init() {
   context.strokeStyle = "#000000"; // Black color
   context.lineWidth = 2; // Default line width
 
-  // Other UI elements initialization
   var clearCanvas = document.getElementById("clearCanvas"),
     deleteLastStep = document.getElementById("deleteLastStep");
 
@@ -192,6 +196,8 @@ var drawing = false;
 
 // context.imageSmoothingEnabled = false;
 var originalImageData = "";
+var originalImageHeight = 0;
+var originalImageWidth = 0;
 function loadImageFileAsURL() {
   var filesSelected = document.getElementById("inputFileToLoad").files;
 
@@ -205,12 +211,12 @@ function loadImageFileAsURL() {
         var imageLoaded = new Image();
 
         imageLoaded.onload = function () {
-          // Clear previous content from the canvas
           context.clearRect(0, 0, canvas.width, canvas.height);
 
-          // Draw the image on the canvas
           context.drawImage(imageLoaded, 0, 0, canvas.width, canvas.height);
 
+          originalImageHeight = imageLoaded.height;
+          originalImageWidth = imageLoaded.width;
           // canvas.width = imageLoaded.width;
           // canvas.height = imageLoaded.height;
           // context.drawImage(imageLoaded, 0, 0);
@@ -218,10 +224,8 @@ function loadImageFileAsURL() {
           originalImageData = fileLoadedEvent.target.result;
           // console.log("Image Source:", fileLoadedEvent.target.result);
 
-          // Save the canvas content to localStorage if needed
           localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
 
-          // Clear any annotations or other previous data
           annotations = [];
         };
 
@@ -236,21 +240,15 @@ function loadImageFileAsURL() {
   }
 }
 
-// Function to programmatically trigger the file input
 function triggerFileInput() {
   document.getElementById("inputFileToLoad").click();
 }
 
-// Function to open the overlay
 function openOverlay() {
-  // Set the source of the fullImage element to the original image data
   document.getElementById("fullImage").src = originalImageData;
-
-  // Display the overlay
   document.getElementById("imageOverlay").style.display = "block";
 }
 
-// Function to close the overlay
 function closeOverlay() {
   document.getElementById("imageOverlay").style.display = "none";
 }
@@ -297,7 +295,6 @@ downloadButton.addEventListener("click", downloadAnnotations);
 function saveMasksAsImages() {
   var masks = [];
 
-  // Iterate over each set of freehand points (each annotation)
   for (
     var annotationIndex = 0;
     annotationIndex < freehandAnnotations.length;
@@ -307,36 +304,34 @@ function saveMasksAsImages() {
       freehandAnnotations[annotationIndex] &&
       freehandAnnotations[annotationIndex].length > 0
     ) {
-      // Create a new canvas for the mask
       var maskCanvas = document.createElement("canvas");
-      maskCanvas.width = canvas.width;
-      maskCanvas.height = canvas.height;
+      maskCanvas.width = originalImageWidth;
+      maskCanvas.height = originalImageHeight;
       var maskContext = maskCanvas.getContext("2d");
 
-      // Draw the freehand path on the mask canvas
       maskContext.beginPath();
       maskContext.moveTo(
         freehandAnnotations[annotationIndex][0].x,
         freehandAnnotations[annotationIndex][0].y
       );
+
       for (var i = 1; i < freehandAnnotations[annotationIndex].length; i++) {
         maskContext.lineTo(
           freehandAnnotations[annotationIndex][i].x,
           freehandAnnotations[annotationIndex][i].y
         );
       }
-      maskContext.closePath(); // Close the path to create a closed region
-      maskContext.fillStyle = "white"; // Set the fill color to white
-      maskContext.fill(); // Fill the closed region with white
 
-      // Extract the mask as an image data object
+      maskContext.closePath();
+      maskContext.fillStyle = "white";
+      maskContext.fill();
+
       var maskImageData = maskContext.getImageData(
         0,
         0,
         maskCanvas.width,
         maskCanvas.height
       );
-
       masks.push(maskImageData);
     } else {
       console.warn(
@@ -346,25 +341,13 @@ function saveMasksAsImages() {
     }
   }
 
-  console.log(masks);
-
   const combinedCanvas = document.createElement("canvas");
-  combinedCanvas.width = canvas.width;
-  combinedCanvas.height = canvas.height;
+  combinedCanvas.width = originalImageWidth;
+  combinedCanvas.height = originalImageHeight;
   const combinedContext = combinedCanvas.getContext("2d");
 
   masks.forEach(function (maskImageData) {
-    // Create a temporary canvas for the current mask
-    const tempCanvas = document.createElement("canvas");
-    tempCanvas.width = combinedCanvas.width;
-    tempCanvas.height = combinedCanvas.height;
-    const tempContext = tempCanvas.getContext("2d");
-
-    // Draw the current mask onto the temporary canvas
-    tempContext.putImageData(maskImageData, 0, 0);
-
-    // Composite the temporary canvas onto the combined canvas
-    combinedContext.drawImage(tempCanvas, 0, 0);
+    combinedContext.putImageData(maskImageData, 0, 0);
   });
 
   const downloadAnchor = document.getElementById("downloadAnchor");
