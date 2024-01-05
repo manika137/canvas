@@ -250,7 +250,6 @@ function openOverlay() {
   document.getElementById("imageOverlay").style.display = "block";
 }
 
-// Function to close the overlay
 function closeOverlay() {
   document.getElementById("imageOverlay").style.display = "none";
 }

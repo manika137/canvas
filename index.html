@@ -38,129 +38,70 @@
         </canvas>
       </div>
 
+      <!-- Main screen buttons (only 'Annotate' is present) -->
       <div id="buttonContainer">
-        <div class="dropdown" id="annotationDropdown">
-          <button onclick="toggleDropdown()" class="listingButton">
-            Annotate
-          </button>
-          <div id="dropdownContent" class="dropdown-content">
-            <!-- not sure what container does- not present anywhere -->
+        <input
+          type="button"
+          class="listingButton"
+          value="Annotate"
+          onclick="openOverlay()"
+        />
 
-            <!-- <div id="controls"> -->
+        <input
+          type="file"
+          id="inputFileToLoad"
+          style="display: none"
+          onchange="loadImageFileAsURL()"
+        />
 
-            <p>
-              <input
-                id="clearCanvas"
-                class="listingButton"
-                type="button"
-                value="New"
-              />
-            </p>
-            <p>
-              <input
-                id="deleteLastStep"
-                class="listingButton"
-                type="button"
-                value="Undo"
-              />
-            </p>
+        <input
+          type="button"
+          class="listingButton"
+          value="Image"
+          onclick="triggerFileInput()"
+        />
+      </div>
 
-            <!-- <p>
-            <input
-              type="button"
-              class="listingButton"
-              value="Annotate"
-              onclick="openOverlay()"
-            />
-            </p> -->
+      <!-- Overlay for annotation -->
+      <div id="imageOverlay" class="overlay">
+        <div class="overlay-content">
+          <span class="closebtn" onclick="closeOverlay()">&times;</span>
+          <img id="fullImage" src="" alt="Full Image Preview" />
 
-            <p>
-              <input
-                type="button"
-                class="listingButton"
-                value="Image"
-                onclick="triggerFileInput()"
-              />
-              <input
-                type="file"
-                id="inputFileToLoad"
-                style="display: none"
-                onchange="loadImageFileAsURL()"
-              />
-            </p>
+          <!-- Buttons from the previous layout -->
+          <input
+            id="clearCanvas"
+            class="listingButton"
+            type="button"
+            value="New"
+          />
+          <input
+            id="deleteLastStep"
+            class="listingButton"
+            type="button"
+            value="Undo"
+          />
 
-            <!-- <p>
-            <input
-              type="button"
-              class="listingButton"
-              value="Image"
-              onclick="loadImageFileAsURL()"
-            />
-           </p>
-           <div class="lightBorder" id="imageDiv">
-             <input
-              type="button"
-              class="closeButtonOptions"
-              id="shapeButton"
-              value="&times"
-              onclick="slideClose(imageDiv)"
-            />
-            <p><input type="file" id="inputFileToLoad" /></p>
-           </div> -->
+          <input
+            id="printFreehandButton"
+            class="listingButton"
+            type="button"
+            value="Save annotations"
+          />
+          <input
+            id="downloadButton"
+            class="listingButton"
+            type="button"
+            value="Download coordinates"
+          />
 
-            <!-- <p>
-            <input
-              type="button"
-              class="listingButton"
-              value="Image"
-              onclick="slideOpen(imageDiv)"
-            />
-          </p>
-          <div class="lightBorder" id="imageDiv">
-            <input
-              type="button"
-              class="closeButtonOptions"
-              id="shapeButton"
-              value="&times"
-              onclick="slideClose(imageDiv)"
-            />
-            <p><input type="file" id="inputFileToLoad" /></p>
-            <p>
-              <input
-                type="button"
-                id="buttonLoadFile"
-                value="Load Selected File"
-                ;
-                onclick="loadImageFileAsURL()"
-              />
-            </p>
-          </div> -->
-            <p>
-              <input
-                id="printFreehandButton"
-                class="listingButton"
-                type="button"
-                value="Save annotations"
-              />
-            </p>
-            <p>
-              <input
-                id="downloadButton"
-                class="listingButton"
-                type="button"
-                value="Download coordinates"
-              />
-            </p>
-            <p>
-              <input
-                id="maskDownloadButton"
-                class="listingButton"
-                type="button"
-                value="Mask download"
-              />
-            </p>
-            <a id="downloadAnchor" style="display: none">Download Masks</a>
-          </div>
+          <input
+            id="maskDownloadButton"
+            class="listingButton"
+            type="button"
+            value="Mask download"
+          />
+          <a id="downloadAnchor" style="display: none">Download Masks</a>
         </div>
       </div>
 
