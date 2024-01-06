@@ -44,18 +44,30 @@
             Annotate
           </button>
           <div id="dropdownContent" class="dropdown-content">
-            <!-- not sure what container does- not present anywhere -->
+            <button
+              onclick="closeDropdown()"
+              style="float: right; background-color: grey"
+            >
+              ✖
+            </button>
 
-            <!-- <div id="controls"> -->
-
-            <p>
+            <!-- <p>
               <input
                 id="clearCanvas"
                 class="listingButton"
                 type="button"
                 value="New"
               />
+            </p> -->
+            <p>
+              <input
+                id="drawButton"
+                class="listingButton"
+                type="button"
+                value="Start Drawing"
+              />
             </p>
+
             <p>
               <input
                 id="deleteLastStep"
@@ -78,7 +90,7 @@
               <input
                 type="button"
                 class="listingButton"
-                value="Image"
+                value="Upload Image"
                 onclick="triggerFileInput()"
               />
               <input
@@ -89,52 +101,6 @@
               />
             </p>
 
-            <!-- <p>
-            <input
-              type="button"
-              class="listingButton"
-              value="Image"
-              onclick="loadImageFileAsURL()"
-            />
-           </p>
-           <div class="lightBorder" id="imageDiv">
-             <input
-              type="button"
-              class="closeButtonOptions"
-              id="shapeButton"
-              value="&times"
-              onclick="slideClose(imageDiv)"
-            />
-            <p><input type="file" id="inputFileToLoad" /></p>
-           </div> -->
-
-            <!-- <p>
-            <input
-              type="button"
-              class="listingButton"
-              value="Image"
-              onclick="slideOpen(imageDiv)"
-            />
-          </p>
-          <div class="lightBorder" id="imageDiv">
-            <input
-              type="button"
-              class="closeButtonOptions"
-              id="shapeButton"
-              value="&times"
-              onclick="slideClose(imageDiv)"
-            />
-            <p><input type="file" id="inputFileToLoad" /></p>
-            <p>
-              <input
-                type="button"
-                id="buttonLoadFile"
-                value="Load Selected File"
-                ;
-                onclick="loadImageFileAsURL()"
-              />
-            </p>
-          </div> -->
             <p>
               <input
                 id="printFreehandButton"

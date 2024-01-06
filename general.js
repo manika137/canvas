@@ -28,24 +28,29 @@ function myFunction() {
 //   }
 // };
 
+// Close the dropdown if the user clicks outside of it
+// window.onclick = function (event) {
+//   if (!event.target.matches(".dropdown button")) {
+//     var dropdowns = document.getElementsByClassName("dropdown-content");
+//     for (var i = 0; i < dropdowns.length; i++) {
+//       var openDropdown = dropdowns[i];
+//       if (openDropdown.style.display === "block") {
+//         openDropdown.style.display = "none";
+//       }
+//     }
+//   }
+// };
+
+let dropdownVisible = false; // Variable to track the dropdown visibility
+
 function toggleDropdown() {
-  var dropdownContent = document.getElementById("dropdownContent");
-  if (dropdownContent.style.display === "block") {
-    dropdownContent.style.display = "none";
-  } else {
-    dropdownContent.style.display = "block";
+  if (!dropdownVisible) {
+    document.getElementById("dropdownContent").style.display = "block";
+    dropdownVisible = true;
   }
 }
 
-// Close the dropdown if the user clicks outside of it
-window.onclick = function (event) {
-  if (!event.target.matches(".dropdown button")) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    for (var i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.style.display === "block") {
-        openDropdown.style.display = "none";
-      }
-    }
-  }
-};
+function closeDropdown() {
+  document.getElementById("dropdownContent").style.display = "none";
+  dropdownVisible = false;
+}

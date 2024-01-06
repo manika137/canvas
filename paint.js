@@ -1,7 +1,6 @@
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 
-// create backing canvas
 var backCanvas = document.createElement("canvas");
 backCanvas.width = canvas.width;
 backCanvas.height = canvas.height;
@@ -54,8 +53,30 @@ function erase(position, esize) {
   }
 }
 
+var canDraw = false;
+
+function toggleDrawButton() {
+  canDraw = !canDraw;
+
+  const drawButton = document.getElementById("drawButton");
+
+  drawButton.value = canDraw ? "Stop Drawing" : "Start Drawing";
+
+  if (canDraw) {
+    document.body.style.overflow = "hidden";
+    document.getElementById("drawButton").value = "Stop Drawing";
+  } else {
+    document.body.style.overflow = "auto";
+    document.getElementById("drawButton").value = "Start Drawing";
+  }
+}
+
+document
+  .getElementById("drawButton")
+  .addEventListener("click", toggleDrawButton);
+
 function drawFree(position) {
-  if (dragging) {
+  if (canDraw && dragging) {
     const scaleX = originalImageWidth / canvas.width;
     const scaleY = originalImageHeight / canvas.height;
 
@@ -70,13 +91,13 @@ function drawFree(position) {
       y: adjustedY,
     });
 
-    localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
-    takeSnapshot();
+    //localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
+    takeSnapshot(); //required
   }
 }
 
 function draw(position) {
-  var fillBox = document.getElementById("fillBox");
+  // var fillBox = document.getElementById("fillBox");
   drawFree(position);
 }
 
@@ -118,17 +139,9 @@ function dragStart(event) {
 function drag(event) {
   if (dragging === true) {
     restoreSnapshot();
-    // if (isTouchDevice) {
-    //   // draglaptop(event);
-    //   position = getTouchCoordinates(event);
-    //   // console.log("mobile");
-    // }
 
     var position;
-    //else {
     position = getTouchCoordinates(event);
-    // console.log("laptop");
-    // }
     draw(position);
   }
 }
@@ -157,9 +170,8 @@ function init() {
   canvas = document.getElementById("canvas");
   context = canvas.getContext("2d");
 
-  // Set default values
-  context.strokeStyle = "#000000"; // Black color
-  context.lineWidth = 2; // Default line width
+  context.strokeStyle = "#000000";
+  context.lineWidth = 2;
 
   var clearCanvas = document.getElementById("clearCanvas"),
     deleteLastStep = document.getElementById("deleteLastStep");
@@ -224,7 +236,7 @@ function loadImageFileAsURL() {
           originalImageData = fileLoadedEvent.target.result;
           // console.log("Image Source:", fileLoadedEvent.target.result);
 
-          localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
+          //localStorage.savedPaintCanvas = JSON.stringify(canvas.toDataURL());
 
           annotations = [];
         };
